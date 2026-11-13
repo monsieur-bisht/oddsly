@@ -68,7 +68,7 @@ export default function Auth({ onAuthed }) {
             setMode(mode === "login" ? "register" : "login");
             setError(null);
           }}
-          className="w-full text-sm text-slate-400 underline"
+          className="min-h-11 w-full text-sm text-slate-400 underline"
         >
           {mode === "login" ? "New here? Create an account" : "Have an account? Sign in"}
         </button>

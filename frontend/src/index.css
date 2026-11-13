@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@layer base {
+  /* Dark scrollbars, date pickers and dropdowns instead of bright white native controls. */
+  html {
+    color-scheme: dark;
+  }
+  /* Tailwind v4 resets buttons to the arrow cursor; clickable things should look clickable. */
+  button:not(:disabled),
+  select {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}

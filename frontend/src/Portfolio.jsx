@@ -12,7 +12,7 @@ export default function Portfolio() {
 
   return (
     <section>
-      <dl className="mb-4 grid grid-cols-3 gap-3 text-sm">
+      <dl className="mb-4 grid grid-cols-1 gap-3 text-sm sm:grid-cols-3">
         <div className={card}>
           <dt className="text-slate-400">Invested (open)</dt>
           <dd className="text-lg font-semibold">{credits(summary.openInvested)}</dd>

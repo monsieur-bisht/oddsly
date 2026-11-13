@@ -36,7 +36,7 @@ function Trade({ market, onDone }) {
             type="button"
             aria-pressed={side === s}
             onClick={() => setSide(s)}
-            className={`rounded-md border px-3 py-1.5 text-sm font-semibold ${
+            className={`min-h-11 rounded-md border px-3 text-sm font-semibold transition-colors duration-150 motion-reduce:transition-none ${
               side === s ? "border-emerald-500 bg-emerald-600 text-white" : "border-slate-700 hover:bg-slate-800"
             }`}
           >

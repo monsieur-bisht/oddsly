@@ -44,7 +44,7 @@ export default function App() {
             {user.username} · <strong>{credits(user.balance)}</strong> credits
           </span>
           <button
-            className="text-slate-400 underline"
+            className="min-h-11 px-2 text-slate-400 underline"
             onClick={() => {
               setToken(null);
               setUser(null);
@@ -54,13 +54,13 @@ export default function App() {
           </button>
         </div>
       </header>
-      <nav aria-label="Main" className="mb-6 flex gap-2 border-b border-slate-800">
+      <nav aria-label="Main" className="mb-6 flex gap-2 overflow-x-auto border-b border-slate-800">
         {tabs.map(([key, label]) => (
           <button
             key={key}
             aria-current={view === key ? "page" : undefined}
             onClick={() => setView(key)}
-            className={`px-3 py-2 text-sm ${view === key ? "border-b-2 border-emerald-500 font-semibold" : "text-slate-400 hover:text-slate-200"}`}
+            className={`min-h-11 shrink-0 px-3 text-sm ${view === key ? "border-b-2 border-emerald-500 font-semibold" : "text-slate-400 hover:text-slate-200"}`}
           >
             {label}
           </button>

@@ -13,7 +13,8 @@ export default function Wallet() {
 
   return (
     <section>
-      <table className="w-full text-left text-sm">
+      <div className="overflow-x-auto">
+      <table className="w-full min-w-[34rem] text-left text-sm">
         <thead className="text-slate-400">
           <tr>
             <th className="py-2">When</th>
@@ -35,6 +36,7 @@ export default function Wallet() {
           ))}
         </tbody>
       </table>
+      </div>
       <div className="mt-4 flex items-center gap-3 text-sm">
         <button className={btnGhost} disabled={page <= 1} onClick={() => setPage(page - 1)}>
           Previous
