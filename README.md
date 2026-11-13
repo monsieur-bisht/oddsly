@@ -1,6 +1,6 @@
 # Oddsly
 
-A Kalshi-inspired prediction market built for learning. **Virtual credits only, no real money.**
+A prediction market built for learning. **Virtual credits only, no real money.**
 
 **Live demo:** https://oddsly.up.railway.app
 
