@@ -158,7 +158,12 @@ export default function Markets({ user, onChanged }) {
                 {m.outcome ? `: ${m.outcome}` : ""}
               </span>
             </div>
-            {m.status === "OPEN" && new Date(m.endDate) > new Date() && <Trade market={m} onDone={changed} />}
+            {m.status === "OPEN" &&
+              (new Date(m.endDate) > new Date() ? (
+                <Trade market={m} onDone={changed} />
+              ) : (
+                <p className="mt-3 text-sm text-amber-400">Trading ended, waiting for resolution.</p>
+              ))}
             {user.role === "admin" && <Admin market={m} onDone={changed} />}
           </li>
         ))}

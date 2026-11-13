@@ -137,6 +137,24 @@ describe("markets, trading, resolution", () => {
     expect(r.body.pagination.total).toBe(1);
   });
 
+  test("search treats special characters as plain text instead of crashing", async () => {
+    for (const s of ["(", "[", ".*", "\\"]) {
+      const r = await call("GET", `/markets?search=${encodeURIComponent(s)}`);
+      expect(r.status).toBe(200);
+    }
+  });
+
+  test("editing an OPEN market's price keeps YES + NO = 100", async () => {
+    const m = await call("POST", "/markets", {
+      token: adminToken,
+      body: { title: "Price edit market", category: "test", yesPrice: 50, endDate: new Date(Date.now() + 86400000).toISOString() },
+    });
+    const r = await call("PATCH", `/markets/${m.body.data._id}`, { token: adminToken, body: { yesPrice: 30 } });
+    expect(r.status).toBe(200);
+    expect(r.body.data.yesPrice).toBe(30);
+    expect(r.body.data.noPrice).toBe(70);
+  });
+
   test("buy uses the server price and debits the server balance", async () => {
     const r = await call("POST", "/orders", { token: alice.token, body: { marketId, side: "YES", quantity: 10 } });
     expect(r.status).toBe(201);
@@ -226,5 +244,18 @@ describe("markets, trading, resolution", () => {
     expect((await call("POST", `/admin/markets/${id}/close`, { token: adminToken })).status).toBe(200);
     expect((await call("POST", "/orders", { token: alice.token, body: { marketId: id, side: "NO", quantity: 1 } })).status).toBe(409);
     expect((await call("DELETE", `/markets/${id}`, { token: adminToken })).status).toBe(204);
+  });
+});
+
+// Keep this last: it exhausts the login limiter for this IP.
+describe("login rate limit", () => {
+  test("too many login attempts get a 429", async () => {
+    const statuses = [];
+    for (let i = 0; i < 30; i++) {
+      const r = await call("POST", "/auth/login", { body: { email: "alice@test.dev", password: "wrong-password-1" } });
+      statuses.push(r.status);
+    }
+    expect(statuses).toContain(429);
+    expect(statuses[0]).toBe(401);
   });
 });

@@ -22,6 +22,8 @@ export function createApp() {
   // Production: serve the built frontend from the same origin (no CORS, one deploy).
   const dist = fileURLToPath(new URL("../../frontend/dist", import.meta.url));
   if (env.NODE_ENV === "production" && existsSync(dist)) {
+    // /assets files have content-hashed names, so they can be cached for a year; index.html is not.
+    app.use("/assets", express.static(`${dist}/assets`, { maxAge: "1y", immutable: true }));
     app.use(express.static(dist));
     app.get("/{*splat}", (_req, res) => res.sendFile(`${dist}/index.html`));
   }

@@ -7,9 +7,12 @@
     "dev": "bun --watch src/server.js",
     "start": "bun src/server.js",
     "seed:admin": "bun scripts/seed-admin.js",
-    "test": "bun test"
+    "test": "bun test",
+    "backup": "bun scripts/backup.js"
   },
-  "trustedDependencies": ["bcrypt"],
+  "trustedDependencies": [
+    "bcrypt"
+  ],
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",

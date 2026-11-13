@@ -7,7 +7,6 @@ export class AppError extends Error {
   }
 }
 
-export const badRequest = (detail, errors) => new AppError(400, "bad-request", detail, errors);
 export const unauthorized = (detail = "Authentication required") => new AppError(401, "unauthorized", detail);
 export const forbidden = (detail = "You do not have permission") => new AppError(403, "forbidden", detail);
 export const notFound = (detail = "Resource not found") => new AppError(404, "not-found", detail);

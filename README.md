@@ -68,6 +68,8 @@ Run the tests with `cd backend && bun test` (20 integration tests, using a separ
 3. **Variables:** set `MONGODB_URI`, `JWT_SECRET` (32+ random characters) and `ADMIN_EMAIL` / `ADMIN_PASSWORD` (a strong password). `PORT` is set by Railway, and the domain must point at that port.
 4. **Create the admin once:** run `bun run seed:admin` from `backend/` with the production variables set.
 
+Backups: Atlas free clusters have no scheduled backups. Run `bun run backup` in `backend/` with the production `MONGODB_URI` set to save every collection to `backend/backups/<date>/` (Git-ignored). Do this regularly.
+
 Run a single instance: the rate limiter keeps its counts in memory. The `shortcut:` comments in `backend/src` list the other known limits.
 
 ## License
