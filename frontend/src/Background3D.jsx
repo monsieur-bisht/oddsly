@@ -22,8 +22,12 @@ export default function Background3D() {
     let dpr = 1;
     let angle = 0;
     let raf = 0;
+    let lastW = 0;
+    let lastH = 0;
 
     const resize = () => {
+      lastW = window.innerWidth;
+      lastH = window.innerHeight;
       dpr = Math.min(window.devicePixelRatio || 1, 1.5); // cap resolution to save battery
       w = canvas.width = window.innerWidth * dpr;
       h = canvas.height = window.innerHeight * dpr;
@@ -72,18 +76,27 @@ export default function Background3D() {
       }
     };
 
-    const loop = () => {
-      angle += 0.003;
-      draw();
+    let last = 0;
+    const loop = (t) => {
       raf = requestAnimationFrame(loop);
+      const dt = last ? t - last : 33; // last is 0 on the first frame, which draws right away
+      if (dt < 33) return; // about 30fps is plenty for a slow spin and saves battery
+      angle += 0.00018 * Math.min(dt, 100); // radians per millisecond: same speed on any screen, no jump after a stall
+      last = t;
+      draw();
     };
     // Animate only when visible and motion is allowed; otherwise draw one still frame.
     const start = () => {
       cancelAnimationFrame(raf);
       if (reduceMotion.matches || document.hidden) draw();
-      else raf = requestAnimationFrame(loop);
+      else {
+        last = 0; // restart the clock after a pause
+        raf = requestAnimationFrame(loop);
+      }
     };
     const onResize = () => {
+      // Phone address bars hide and show while scrolling and change only the height; don't rebuild for that.
+      if (window.innerWidth === lastW && Math.abs(window.innerHeight - lastH) < 120) return;
       resize();
       start();
     };
