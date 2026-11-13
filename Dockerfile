@@ -14,4 +14,6 @@ COPY backend/ ./
 # app.js looks for ../../frontend/dist relative to /app/src
 COPY --from=web /web/dist /frontend/dist
 ENV NODE_ENV=production
+# Don't run as root: the app only reads its files. The oven/bun image ships this user.
+USER bun
 CMD ["bun", "src/server.js"]
