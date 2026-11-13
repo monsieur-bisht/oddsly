@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
@@ -15,6 +17,15 @@ export function createApp() {
   app.use(cors({ origin: env.CORS_ORIGIN.split(","), methods: ["GET", "POST", "PATCH", "DELETE"] }));
   app.use(express.json({ limit: "10kb" }));
   app.use("/api/v1", apiLimiter, routes);
+  app.use("/api", notFoundHandler); // unknown API paths must 404 as JSON, not fall into the SPA catch-all below
+
+  // Production: serve the built frontend from the same origin (no CORS, one deploy).
+  const dist = fileURLToPath(new URL("../../frontend/dist", import.meta.url));
+  if (env.NODE_ENV === "production" && existsSync(dist)) {
+    app.use(express.static(dist));
+    app.get("/{*splat}", (_req, res) => res.sendFile(`${dist}/index.html`));
+  }
+
   app.use(notFoundHandler);
   app.use(errorHandler);
   return app;
